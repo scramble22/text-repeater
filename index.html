@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт-повторитель</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        h1 {
+            color: #4CAF50;
+        }
+
+        textarea {
+            width: 80%;
+            height: 100px;
+            margin-bottom: 20px;
+            resize: none;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        select, button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        select:hover, button:hover {
+            background-color: #45a049;
+        }
+
+        #copyMessage {
+            color: #008000;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Сайт-повторитель</h1>
+
+    <textarea id="inputText" placeholder="Введите текст" onkeydown="if (event.keyCode == 13) repeatText();"></textarea><br>
+
+    <label for="repeatMode">Выберите режим повторения:</label>
+    <select id="repeatMode">
+        <option value="withSpaces">В строку (с пробелами)</option>
+        <option value="withoutSpaces">В строку (без пробелов)</option>
+        <option value="inColumn">В столбик</option>
+    </select><br>
+
+    <label for="repeatCount">Повторить текст:</label>
+    <input type="number" id="repeatCount" min="1" value="1"><br>
+
+    <button onclick="repeatText()">Повторить</button><br>
+
+    <textarea id="outputText" placeholder="Скопированный текст будет здесь" readonly></textarea><br>
+
+    <button onclick="copyToClipboard()">Копировать в буфер</button>
+    <div id="copyMessage"></div>
+
+    <script>
+        function repeatText() {
+            var inputText = document.getElementById('inputText').value;
+            var repeatCount = parseInt(document.getElementById('repeatCount').value, 10);
+            var repeatMode = document.getElementById('repeatMode').value;
+            var outputText = '';
+
+            for (var i = 0; i < repeatCount; i++) {
+                if (repeatMode === 'withSpaces') {
+                    outputText += inputText + ' ';
+                } else if (repeatMode === 'withoutSpaces') {
+                    outputText += inputText;
+                } else if (repeatMode === 'inColumn') {
+                    outputText += inputText + '\n';
+                }
+            }
+
+            document.getElementById('outputText').value = outputText.trim();
+        }
+
+        function copyToClipboard() {
+            var outputText = document.getElementById('outputText');
+            outputText.select();
+            document.execCommand('copy');
+            var copyMessage = document.getElementById('copyMessage');
+            copyMessage.textContent = 'Текст скопирован в буфер обмена!';
+            setTimeout(function() {
+                copyMessage.textContent = '';
+            }, 3000);
+        }
+    </script>
+
+</body>
+</html>
