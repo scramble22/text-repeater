@@ -58,7 +58,7 @@
 </head>
 <body>
 
-    <h1>Сайт-повторитель</h1>
+    <h1>Я ща тебе поспамлю 😡</h1>
 
     <textarea id="inputText" placeholder="Введите текст" onkeydown="if (event.keyCode == 13) repeatText();"></textarea><br>
 
@@ -67,6 +67,7 @@
         <option value="withSpaces">В строку (с пробелами)</option>
         <option value="withoutSpaces">В строку (без пробелов)</option>
         <option value="inColumn">В столбик</option>
+        <option value="withEmojis">С злыми эмодзями...</option>
     </select><br>
 
     <label for="repeatCount">Повторить текст:</label>
@@ -80,6 +81,13 @@
     <div id="copyMessage"></div>
 
     <script>
+        function getRandomEmoji() {
+            // Array of 10 emojis (you can customize this list)
+            var emojis = ["😡", "😠", "👿", "💢", "🤬", "😤", "🙄", "😾", "😑", "😩"];
+            var randomIndex = Math.floor(Math.random() * emojis.length);
+            return emojis[randomIndex];
+        }
+
         function repeatText() {
             var inputText = document.getElementById('inputText').value;
             var repeatCount = parseInt(document.getElementById('repeatCount').value, 10);
@@ -87,13 +95,19 @@
             var outputText = '';
 
             for (var i = 0; i < repeatCount; i++) {
+                var line = inputText;
+
                 if (repeatMode === 'withSpaces') {
-                    outputText += inputText + ' ';
+                    line += ' ';
                 } else if (repeatMode === 'withoutSpaces') {
-                    outputText += inputText;
+                    // Do nothing additional for this mode
                 } else if (repeatMode === 'inColumn') {
-                    outputText += inputText + '\n';
+                    line += '\n';
+                } else if (repeatMode === 'withEmojis') {
+                    line += ' ' + getRandomEmoji() + ' ';
                 }
+
+                outputText += line;
             }
 
             document.getElementById('outputText').value = outputText.trim();
@@ -105,7 +119,7 @@
             document.execCommand('copy');
             var copyMessage = document.getElementById('copyMessage');
             copyMessage.textContent = 'Текст скопирован в буфер обмена!';
-            setTimeout(function() {
+            setTimeout(function () {
                 copyMessage.textContent = '';
             }, 3000);
         }
